@@ -21,6 +21,7 @@ public class Controller {
 
     private String roomname;
     private String username;
+    private String permission;
 
     @GetMapping("/login")
     public String login() {
@@ -34,7 +35,6 @@ public class Controller {
 
     @PostMapping("/room")
     public String room(@ModelAttribute UserHandler user, Model model) throws IOException, NoSuchAlgorithmException {
-        CustomLogger.logCustomInfo(user.getUsername() + " just logged in!");
         Path fileLocation = Path.of("rooms/" + user.getRoomname() + "/" + user.getUsername() + ".task");
 
         if (Files.exists(fileLocation)) {
@@ -49,7 +49,10 @@ public class Controller {
 
                 username = user.getUsername();
                 roomname = user.getRoomname();
+                permission = user.getPermission();
 
+                model.addAttribute("permission", permission);
+                CustomLogger.logCustomInfo(user.getUsername() + " just logged in!");
                 return "Structure";
             } else {
                 model.addAttribute("wronglogin", "Login data is not valid!");
@@ -65,7 +68,6 @@ public class Controller {
 
     @PostMapping("/Login")
     public String backtoLogin(@ModelAttribute UserHandler user, Model model) throws IOException, NoSuchAlgorithmException {
-        CustomLogger.logCustomInfo(user.getUsername() + " just signed up!");
         Path fileLocation = Path.of("rooms/" + user.getRoomname() + "/" + user.getUsername() + ".task");
 
         if (Files.exists(fileLocation)) {
@@ -79,7 +81,7 @@ public class Controller {
                 System.out.println("backToLogin(): An IOException got thrown.");
                 throw new IOException("This User already exists!");
             }
-
+            CustomLogger.logCustomInfo(user.getUsername() + " just signed up!");
             return "Login";
         }
     }
