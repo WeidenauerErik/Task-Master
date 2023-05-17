@@ -47,7 +47,19 @@
         li {
             list-style-type: none;
         }
-
+        #getback {
+            background-color: #8ba4a4;
+            margin-right: 20px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 50%;
+            border-width: 0px;
+            font-weight: bold;
+            font-size: 20px;
+        }
         #usernameLetter {
             background-color: #8ba4a4;
             margin-right: 20px;
@@ -236,11 +248,15 @@
             display: none;
         }
     </style>
+
 </head>
 <body>
 
 <header id="header">
     <ul>
+        <form action="get-back" method="post">
+            <button type="submit" id="getback">back</button>
+        </form>
         <li>Welcome back <span th:text="${username}">Erik</span>!</li>
         <button th:text="${usernameLetter}" id="usernameLetter">E</button>
     </ul>
@@ -273,7 +289,7 @@
     <form id="taskAdder" action="/update-after-addTask" method="post">
         <h1>Add new Task:</h1>
         <div class="addTaskItem">
-            <input name="Title" id="taskTitle" type="text" autofocus required th:enabled="${permission} == 'teacher'">
+            <input name="Title" id="taskTitle" type="text" autofocus required>
             <span>Title</span>
         </div>
         <div class="addTaskItem">
@@ -289,6 +305,7 @@
                 Submit
             </button>
         </div>
+        <p></p>
     </form>
     <form id="todoAdder" action="/update-after-addTodo" method="post">
         <h1>Add new Todo:</h1>
