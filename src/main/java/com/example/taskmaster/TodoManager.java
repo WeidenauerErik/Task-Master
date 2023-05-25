@@ -27,6 +27,8 @@ public class TodoManager {
             }
         }
 
+        sortTodos();
+
         return todos;
     }
 
@@ -43,7 +45,26 @@ public class TodoManager {
             }
         }
 
+        sortTodos();
+
         return todos;
+    }
+
+    private static void sortTodos() {
+        todos.sort((o1, o2) -> {
+            String[] date1 = o1.getDeadline().split("-");
+            String[] date2 = o2.getDeadline().split("-");
+
+            if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
+                return -1;
+            } else if (Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
+                return -1;
+            } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
     }
 
     public static void addTodo(Todo todo) {
