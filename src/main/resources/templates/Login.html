@@ -89,40 +89,30 @@
     <title>Login - TaskMaster</title>
 </head>
 <body>
-
 <div class="stripe"><p>Welcome to TaskMaster, your Homework-Organizer.</p></div>
-
 <h1>Login to TaskMaster!</h1>
-
 <form action="/room" method="post">
     <section class="LoginField">
         <div class="loginItem">
             <input id="roomname" name="roomname" required type="text" autofocus>
             <span>Room name</span>
         </div>
-
         <div class="loginItem">
             <input id="username" name="username" required type="text">
             <span>Username</span>
         </div>
-
         <div class="loginItem">
             <input id="password" name="password" required type="password">
             <span>Password</span>
         </div>
-
         <button style="border-radius: 5px;border-width: 0;background-color: #8ba4a4; margin-top: 10px" type="submit" id="submitButton">
             Login
         </button>
     </section>
 </form>
-
 <form action="/signup" method="get">
-
     <button style="border-width: 0;background-color: white;margin-top: 10px;font-size:20px" type="submit" id="notRegisteredYet">Not registered yet?</button>
-
 </form>
 <p th:text="${wronglogin}" id="wrong"></p>
-
 </body>
 </html>

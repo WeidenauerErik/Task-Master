@@ -1,11 +1,16 @@
 package com.example.taskmaster;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Todo {
     private String title;
     private String deadline;
     private String info;
 
-    public Todo(String title, String deadline, String info) {
+    public Todo(String title, String deadline, String info) throws IOException {
         this.title = title;
         this.deadline = deadline;
         this.info = info;
@@ -37,6 +42,6 @@ public class Todo {
 
     @Override
     public String toString() {
-        return "[" + title + "][" +deadline + "][" + info;
+        return "[" + title + "][" +deadline + "][" + info + "]";
     }
 }

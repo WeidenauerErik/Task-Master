@@ -23,7 +23,19 @@ public class TaskManager {
             in.readLine();
 
             while ((line = in.readLine()) != null) {
-                tasks.add(new Task(line, in.readLine(), in.readLine()));
+                String title = line;
+                String date = in.readLine();
+                String info = in.readLine();
+                String author = in.readLine();
+                try (BufferedReader in2 = Files.newBufferedReader(Path.of("var/showAll.txt"))) {
+                    if (in2.readLine().equals("0")) {
+                        if (isValidDate(date)) {
+                            tasks.add(new Task(title, date, info, author, false));
+                        }
+                    } else {
+                        tasks.add(new Task(title, date, info, author, false));
+                    }
+                }
             }
         }
 
@@ -33,6 +45,7 @@ public class TaskManager {
     }
 
     public static List<Task> getTasks(String username, String roomname) throws IOException {
+        System.out.println("username = " + username + ", roomname = " + roomname);
         tasks.clear();
 
         Path fileLocation = Path.of("rooms/" + roomname + "/" + username + ".task");
@@ -42,7 +55,19 @@ public class TaskManager {
             in.readLine();
 
             while ((line = in.readLine()) != null) {
-                tasks.add(new Task(line, in.readLine(), in.readLine()));
+                String title = line;
+                String date = in.readLine();
+                String info = in.readLine();
+                String author = in.readLine();
+                try (BufferedReader in2 = Files.newBufferedReader(Path.of("var/showAll.txt"))) {
+                    if (in2.readLine().equals("0")) {
+                        if (isValidDate(date)) {
+                            tasks.add(new Task(title, date, info, author, false));
+                        }
+                    } else {
+                        tasks.add(new Task(title, date, info, author, false));
+                    }
+                }
             }
         }
 
@@ -51,21 +76,59 @@ public class TaskManager {
         return tasks;
     }
 
-    private static void sortTasks() {
-        tasks.sort((o1, o2) -> {
-            String[] date1 = o1.getDeadline().split("-");
-            String[] date2 = o2.getDeadline().split("-");
+    private static boolean isValidDate(String date) {
+        // YEAR-MONTH-DAY
+        String[] currentDate = Time.getDate().split("-");
+        String[] taskDate = date.split("-");
 
-            if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
-                return -1;
-            } else if (Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
-                return -1;
-            } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-                return -1;
-            } else {
-                return 1;
+        if (Integer.parseInt(taskDate[0]) >= Integer.parseInt(currentDate[0])) {
+            if (Integer.parseInt(taskDate[1]) >= Integer.parseInt(currentDate[1])) {
+                if (Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2])) {
+                    return true;
+                }
             }
-        });
+        }
+
+        return false;
+    }
+
+    public String getCurrentUser() throws IOException {
+        try (BufferedReader in = Files.newBufferedReader(Path.of("var/currentUser.txt"))) {
+            return in.readLine();
+        }
+    }
+    private static void sortTasks() {
+        if (tasks.size() > 1) {
+            tasks.sort((o1, o2) -> {
+                String[] date1, date2;
+                try {
+                    date1 = o1.getDeadline().split("-");
+                } catch (NullPointerException e) {
+                    return 1;
+                }
+                try {
+                    date2 = o2.getDeadline().split("-");
+                } catch (NullPointerException e) {
+                    return -1;
+                }
+
+                if (date1.length < 2) {
+                    return 1;
+                } else if (date2.length < 2) {
+                    return -1;
+                }
+
+                if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
+                    return -1;
+                } else if (Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
+                    return -1;
+                } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+        }
     }
 
     public static void addTask(Task task) {
@@ -77,6 +140,7 @@ public class TaskManager {
             out.write(task.getTitle() + System.lineSeparator());
             out.write(task.getDeadline() + System.lineSeparator());
             out.write(task.getInfo() + System.lineSeparator());
+            out.write(task.getAuthor() + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }

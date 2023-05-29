@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${roomName}"></title>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/5e1edf08ee.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@100&display=swap');
 
@@ -39,27 +40,32 @@
             grid-column: 1 / 11;
             grid-row: 11 / 11;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
+            flex-flow: row wrap;
             background-color: #637a7a;
             height: 50px;
+            font-size: 20px;
         }
 
         li {
             list-style-type: none;
         }
+
         #getback {
             background-color: #8ba4a4;
             margin-right: 20px;
-            width: 50px;
+            width: 90px;
             height: 50px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-radius: 50%;
-            border-width: 0px;
+            border-radius: 20%;
+            border-bottom: 2px solid #1e2f2f;
+            border-right: 2px solid #1e2f2f;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 30px;
         }
+
         #usernameLetter {
             background-color: #8ba4a4;
             margin-right: 20px;
@@ -68,48 +74,59 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-radius: 50%;
-            border-width: 0px;
+            border-radius: 20%;
+            border-bottom: 2px solid #1e2f2f;
+            border-right: 2px solid #1e2f2f;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 30px;
         }
 
         #task {
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 55% 35% 10%;
+            grid-template-rows: repeat(2, 1fr);
             background-color: #8ba4a4;
             border-radius: 10px;
             padding-left: 15px;
-            padding-right: 15px;
             margin: 10px;
         }
 
         #todo {
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 55% 35% 10%;
+            grid-template-rows: repeat(2, 1fr);
             background-color: #8ba4a4;
             border-radius: 10px;
             padding-left: 15px;
-            padding-right: 15px;
             margin: 10px;
         }
 
-        #menu {
+        #task-menu {
             display: flex;
-            flex-flow: column wrap;
-            justify-content: space-between;
-            height: 95%;
+            flex-flow: column nowrap;
+            justify-content: center;
             align-items: center;
-            width: 95%;
             margin: 15px;
-            flex-grow: 1;
-            grid-column: 1 / 3;
-            grid-row: 2 / 11;
-            background-color: #a7c5c5;
             border-radius: 20px;
+            grid-column: 1 / 3;
+            grid-row: 2 / 7;
+            background-color: #a7c5c5;
             text-align: center;
+            max-height: 45vh;
+        }
+
+        #todo-menu {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+            margin: 15px;
+            border-radius: 20px;
+            grid-column: 1 / 3;
+            grid-row: 7 / 11;
+            background-color: #a7c5c5;
+            text-align: center;
+            max-height: 36vh;
         }
 
         #taskContainer {
@@ -118,7 +135,7 @@
             margin: 15px;
             background-color: #a7c5c5;
             border-radius: 20px;
-            max-height: 400px;
+            max-height: 45vh;
             overflow: scroll;
             scrollbar-width: none;
         }
@@ -129,9 +146,9 @@
             background-color: #a7c5c5;
             margin: 15px;
             border-radius: 20px;
+            max-height: 36vh;
             overflow: scroll;
             scrollbar-width: none;
-            max-height: 400px;
         }
 
         #todoAdder,
@@ -144,15 +161,12 @@
             width: 100%;
         }
 
-        #todoAdder {
-            margin-bottom: 40px;
-        }
-
-        #taskAdder {
-            margin-top: 20px;
+        #welcome-message {
+            font-size: 2.5em;
         }
 
         .submitButton {
+            font-size: 1.5em;
             border-radius: 5px;
             border-width: 0;
             background-color: #8ba4a4;
@@ -163,8 +177,9 @@
 
         .addTaskItem {
             position: relative;
-            width: 250px;
+            width: 85%;
         }
+
         .addTaskItem input {
             width: 100%;
             padding: 10px;
@@ -176,6 +191,7 @@
             font-size: 1.2em;
             transition: 0.3s;
         }
+
         .addTaskItem span {
             position: absolute;
             left: 0;
@@ -185,6 +201,7 @@
             color: #1e2f2f;
             text-transform: uppercase;
         }
+
         .addTaskItem input:valid ~ span,
         .addTaskItem input:focus ~ span {
             color: #1e2f2f;
@@ -198,6 +215,7 @@
             letter-spacing: 0.2em;
             display: inline;
         }
+
         .addTaskItem input:valid,
         .addTaskItem input:focus {
             border: 1px solid #1e2f2f;
@@ -205,8 +223,9 @@
 
         .addTodoItem {
             position: relative;
-            width: 250px;
+            width: 85%;
         }
+
         .addTodoItem input {
             width: 100%;
             padding: 10px;
@@ -218,6 +237,7 @@
             font-size: 1.2em;
             transition: 0.3s;
         }
+
         .addTodoItem span {
             position: absolute;
             left: 0;
@@ -227,6 +247,7 @@
             color: #1e2f2f;
             text-transform: uppercase;
         }
+
         .addTodoItem input:valid ~ span,
         .addTodoItem input:focus ~ span {
             color: #1e2f2f;
@@ -240,95 +261,164 @@
             letter-spacing: 0.2em;
             display: inline;
         }
+
         .addTodoItem input:valid,
         .addTodoItem input:focus {
             border: 1px solid #1e2f2f;
         }
+
         .deadline {
             display: none;
         }
-    </style>
 
+        textarea {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            overflow: auto;
+            resize: none;
+        }
+
+        hr {
+            width: 100%;
+            height: 20px;
+        }
+
+        .title {
+            font-weight: bold;
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            font-size: 2em;
+            font-style: italic;
+        }
+
+        .info {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+            font-size: 2em;
+        }
+
+        .date {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            font-weight: bold;
+            font-size: 2em;
+        }
+
+        .author {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            font-size: 2em;
+        }
+
+        .delete {
+            grid-column: 3 / 4;
+            grid-row: 1 / 3;
+            background-color: #8ba4a4;
+            border-radius: 10px;
+            border-bottom: 2px solid #1e2f2f;
+            border-right: 2px solid #1e2f2f;
+        }
+        #options {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+        }
+        .filter {
+            background-color: #8ba4a4;
+            border-radius: 10px;
+            border-bottom: 2px solid #1e2f2f;
+            border-right: 2px solid #1e2f2f;
+            padding: 5px 10px;
+        }
+    </style>
+    <script defer>
+        "use strict";
+
+        function deleteParent(button) {
+            let parentElement = button.parentNode;
+            parentElement.remove();
+        }
+    </script>
 </head>
 <body>
 
 <header id="header">
     <ul>
         <form action="get-back" method="post">
-            <button type="submit" id="getback">back</button>
+            <button id="getback" type="submit">back</button>
         </form>
-        <li>Welcome back <span th:text="${username}">Erik</span>!</li>
-        <button th:text="${usernameLetter}" id="usernameLetter">E</button>
+        <li id="welcome-message">Welcome back <span th:text="${username}">Erik</span>!</li>
+        <button id="usernameLetter" th:text="${usernameLetter}">E</button>
     </ul>
+    <div id="options">
+        <form action="/show-all-tasks" method="get">
+            <button class="submitButton filter" type="submit">Show all tasks</button>
+        </form>
+        <form action="/ignore-expired-tasks" method="get">
+            <button class="submitButton filter" type="submit">Ignore expired tasks</button>
+        </form>
+    </div>
 </header>
 <div id="taskContainer">
-    <p th:text="${info_tasks}" class="infos"></p>
+    <p class="infos" th:text="${info_tasks}"></p>
     <tr th:each="homework: ${tasks}">
-        <div style="display: flex; flex-flow: row nowrap" id="task">
-            <div>
-                <h1 th:text="${homework.getTitle}">Mathe-HÜ</h1>
-                <p th:text="${homework.getInfo}">Buch S.125/1,2,3</p>
-            </div>
-            <h1 th:text="${homework.getDeadline}">21.02.2023</h1>
+        <div id="task">
+            <textarea class="title" th:text="${homework.getTitle}">title</textarea>
+            <textarea class="info" th:text="${homework.getInfo}">info</textarea>
+            <textarea class="date" th:text="${homework.getDeadline}">date</textarea>
+            <textarea class="author" th:text="${homework.getAuthor}">author</textarea>
+            <button class="delete" onclick="deleteParent(this)"><i class="fa-solid fa-trash-can fa-3x"
+                                                                   style="color: #1e2f2f;"></i>
+            </button>
         </div>
     </tr>
 </div>
 <div id="todoContainer">
-    <p th:text="${info_todos}" class="infos"></p>
+    <p class="infos" th:text="${info_todos}"></p>
     <tr th:each="todoItem: ${todos}">
-        <div style="display: flex; flex-flow: row nowrap" id="todo">
-            <div>
-                <h1 th:text="${todoItem.getTitle}">Mathe-HÜ</h1>
-                <p th:text="${todoItem.getInfo}">Buch S.125/1,2,3</p>
-            </div>
-            <h1 th:text="${todoItem.getDeadline}">21.02.2023</h1>
+        <div id="todo">
+            <textarea class="title" th:text="${todoItem.getTitle}">title</textarea>
+            <textarea class="info" th:text="${todoItem.getInfo}">info</textarea>
+            <textarea class="date" th:text="${todoItem.getDeadline}">date</textarea>
+            <button class="delete" onclick="deleteParent(this)"><i class="fa-solid fa-trash-can fa-3x"
+                                                                   style="color: #1e2f2f;"></i>
+            </button>
         </div>
     </tr>
 </div>
-<section id="menu">
-    <form id="taskAdder" action="/update-after-addTask" method="post">
-        <h1>Add new Task:</h1>
-        <div class="addTaskItem">
-            <input name="Title" id="taskTitle" type="text" autofocus required>
-            <span>Title</span>
-        </div>
-        <div class="addTaskItem">
-            <input name="Info" id="taskInfo" type="text" required>
-            <span>Info</span>
-        </div>
-        <div class="addTaskItem">
-            <input name="Deadline" id="taskDeadline" type="date" required>
-            <span class="deadline">Deadline</span>
-        </div>
-        <div class="addTaskItem">
-            <button type="submit" class="submitButton">
-                Submit
-            </button>
-        </div>
-        <p></p>
-    </form>
-    <form id="todoAdder" action="/update-after-addTodo" method="post">
-        <h1>Add new Todo:</h1>
+<section id="task-menu">
+    <hi>Only teachers can add room-tasks.</hi>
+</section>
+<section id="todo-menu">
+    <form action="/update-after-addTodo" id="todoAdder" method="post">
+        <h1>Add new <abbr title="Private tasks are task only you can create and only you - the author - can see them.">private
+            task:</abbr></h1>
         <div class="addTodoItem">
-            <input name="Title" id="todoTitle" type="text" required>
+            <input id="todoTitle" name="Title" required type="text">
             <span>Title</span>
         </div>
         <div class="addTodoItem">
-            <input name="Info" id="todoInfo" type="text" required>
+            <input id="todoInfo" name="Info" required type="text">
             <span>Info</span>
         </div>
         <div class="addTodoItem">
-            <input name="Deadline" id="todoDeadline" type="date" required>
+            <input id="todoDeadline" name="Deadline" required type="date">
             <span class="deadline">Deadline</span>
         </div>
         <div class="addTodoItem">
-            <button type="submit" class="submitButton">
+            <button class="submitButton" type="submit">
                 Submit
             </button>
         </div>
     </form>
 </section>
 <footer>
+    <a href="/about" target="_blank">About TaskMaster</a>
     <p>created by Erik & David</p>
 </footer>
 </body>

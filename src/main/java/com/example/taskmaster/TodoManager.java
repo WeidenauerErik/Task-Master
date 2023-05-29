@@ -17,13 +17,24 @@ public class TodoManager {
     public static List<Todo> getTodos(UserHandler user) throws IOException {
         todos.clear();
 
-        Path fileLocation = Path.of("rooms/" + user.getRoomname() + "/" + user.getUsername() + ".todo");
+        Path fileLocation = Path.of("private_tasks/" + user.getUsername() + ".todo");
 
         try (BufferedReader in = Files.newBufferedReader(fileLocation, StandardCharsets.UTF_8)) {
             String line;
 
             while ((line = in.readLine()) != null) {
-                todos.add(new Todo(line, in.readLine(), in.readLine()));
+                String title = line;
+                String date = in.readLine();
+                String info = in.readLine();
+                try (BufferedReader in2 = Files.newBufferedReader(Path.of("var/showAll.txt"))) {
+                    if (in2.readLine().equals("0")) {
+                        if (isValidDate(date)) {
+                            todos.add(new Todo(title, date, info));
+                        }
+                    } else {
+                        todos.add(new Todo(title, date, info));
+                    }
+                }
             }
         }
 
@@ -35,13 +46,27 @@ public class TodoManager {
     public static List<Todo> getTodos(String username, String roomname) throws IOException {
         todos.clear();
 
-        Path fileLocation = Path.of("rooms/" + roomname + "/" + username + ".todo");
+        Path fileLocation = Path.of("private_tasks/" + username + ".todo");
+        if (!Files.exists(fileLocation)) {
+            Files.createFile(fileLocation);
+        }
 
-        try (BufferedReader in = Files.newBufferedReader(fileLocation, StandardCharsets.UTF_8)) {
+        try (BufferedReader in = Files.newBufferedReader(fileLocation)) {
             String line;
 
             while ((line = in.readLine()) != null) {
-                todos.add(new Todo(line, in.readLine(), in.readLine()));
+                String title = line;
+                String date = in.readLine();
+                String info = in.readLine();
+                try (BufferedReader in2 = Files.newBufferedReader(Path.of("var/showAll.txt"))) {
+                    if (in2.readLine().equals("0")) {
+                        if (isValidDate(date)) {
+                            todos.add(new Todo(title, date, info));
+                        }
+                    } else {
+                        todos.add(new Todo(title, date, info));
+                    }
+                }
             }
         }
 
@@ -50,21 +75,44 @@ public class TodoManager {
         return todos;
     }
 
-    private static void sortTodos() {
-        todos.sort((o1, o2) -> {
-            String[] date1 = o1.getDeadline().split("-");
-            String[] date2 = o2.getDeadline().split("-");
+    private static boolean isValidDate(String date) {
+        // YEAR-MONTH-DAY
+        String[] currentDate = Time.getDate().split("-");
+        String[] taskDate = date.split("-");
 
-            if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
-                return -1;
-            } else if (Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
-                return -1;
-            } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-                return -1;
-            } else {
-                return 1;
+        if (Integer.parseInt(taskDate[0]) >= Integer.parseInt(currentDate[0])) {
+            if (Integer.parseInt(taskDate[1]) >= Integer.parseInt(currentDate[1])) {
+                if (Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2])) {
+                    return true;
+                }
             }
-        });
+        }
+
+        return false;
+    }
+    private static void sortTodos() {
+        if (todos.size() > 1) {
+            todos.sort((o1, o2) -> {
+                String[] date1 = o1.getDeadline().split("-");
+                String[] date2 = o2.getDeadline().split("-");
+
+                if (date1.length < 2) {
+                    return 1;
+                } else if (date2.length < 2) {
+                    return -1;
+                }
+
+                if (Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
+                    return -1;
+                } else if (Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
+                    return -1;
+                } else if (Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+        }
     }
 
     public static void addTodo(Todo todo) {

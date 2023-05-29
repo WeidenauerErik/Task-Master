@@ -2,6 +2,7 @@ package com.example.taskmaster;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -42,11 +43,19 @@ public class FileManager {
     }
 
     public static void createRoom(UserHandler user) throws IOException {
+        System.out.println("FileManager.createRoom");
+        System.out.println("user = " + user);
         Path fileLocation = Path.of("rooms/" + user.getRoomname());
 
         if (!(Files.exists(fileLocation))) {
-            Files.createDirectory(fileLocation);
-            Files.createFile(Path.of("rooms/" + user.getRoomname() + "/general.rtf"));
+            try {
+                Files.createDirectory(fileLocation);
+                Files.createFile(Path.of("rooms/" + user.getRoomname() + "/general.rtf"));
+                Files.createFile(Path.of("private_tasks/" + user.getUsername() + ".todo"));
+                System.out.println("Just created the file: " + "private_tasks/" + user.getUsername() + ".todo");
+
+            } catch (FileAlreadyExistsException ignored) {
+            }
         }
     }
 
@@ -55,7 +64,6 @@ public class FileManager {
 
         if (!Files.exists(fileLocation)) {
             Files.createFile(Path.of("rooms/" + user.getRoomname() + "/" + user.getUsername() + ".task"));
-            Files.createFile(Path.of("rooms/" + user.getRoomname() + "/" + user.getUsername() + ".todo"));
             writeUserData(user);
             CopyToNewUser(user);
             return true;
