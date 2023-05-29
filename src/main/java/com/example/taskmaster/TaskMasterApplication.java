@@ -10,14 +10,14 @@ import java.nio.file.Path;
 
 @SpringBootApplication
 public class TaskMasterApplication {
-	public static void main(String[] args) throws IOException {
-		// wenn man die Terminal Ausgabe in einer Datei haben will:
-		try (BufferedWriter out = Files.newBufferedWriter(Path.of("var/showAll.txt"))) {
-			out.write("1");
-		}
+    public static void main(String[] args) throws IOException {
+        // wenn man die Terminal Ausgabe in einer Datei haben will:
+        try (BufferedWriter out = Files.newBufferedWriter(Path.of("var/showAll.txt"))) {
+            out.write("1");
+        }
 
-		TerminalReader.TerminalToFile("Terminal/out.txt");
-		SpringApplication app = new SpringApplication(TaskMasterApplication.class);
-		app.run(args);
-	}
+        TerminalReader.TerminalToFile("Terminal/out.txt");
+        SpringApplication app = new SpringApplication(TaskMasterApplication.class);
+        app.run(args);
+    }
 }

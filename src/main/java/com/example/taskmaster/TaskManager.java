@@ -7,11 +7,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TaskManager {
 
-    private static List<Task> tasks = new LinkedList<>();
+    private static final List<Task> tasks = new LinkedList<>();
 
     public static List<Task> getTasks(UserHandler user) throws IOException {
         tasks.clear();
@@ -83,20 +84,13 @@ public class TaskManager {
 
         if (Integer.parseInt(taskDate[0]) >= Integer.parseInt(currentDate[0])) {
             if (Integer.parseInt(taskDate[1]) >= Integer.parseInt(currentDate[1])) {
-                if (Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2])) {
-                    return true;
-                }
+                return Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2]);
             }
         }
 
         return false;
     }
 
-    public String getCurrentUser() throws IOException {
-        try (BufferedReader in = Files.newBufferedReader(Path.of("var/currentUser.txt"))) {
-            return in.readLine();
-        }
-    }
     private static void sortTasks() {
         if (tasks.size() > 1) {
             tasks.sort((o1, o2) -> {
@@ -143,6 +137,12 @@ public class TaskManager {
             out.write(task.getAuthor() + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public String getCurrentUser() throws IOException {
+        try (BufferedReader in = Files.newBufferedReader(Path.of("var/currentUser.txt"))) {
+            return in.readLine();
         }
     }
 

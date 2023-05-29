@@ -82,14 +82,13 @@ public class TodoManager {
 
         if (Integer.parseInt(taskDate[0]) >= Integer.parseInt(currentDate[0])) {
             if (Integer.parseInt(taskDate[1]) >= Integer.parseInt(currentDate[1])) {
-                if (Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2])) {
-                    return true;
-                }
+                return Integer.parseInt(taskDate[2]) >= Integer.parseInt(currentDate[2]);
             }
         }
 
         return false;
     }
+
     private static void sortTodos() {
         if (todos.size() > 1) {
             todos.sort((o1, o2) -> {
